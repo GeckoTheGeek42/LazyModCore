@@ -3,4 +3,4 @@ LazyModCore
 
 Minecraft Forge Modding Core for Lazy People
 
-[![Build Status](https://travis-ci.org/SpongePowered/SpongeAPI.png?branch=master)](https://travis-ci.org/SpongePowered/SpongeAPI)
+[![Build Status](https://travis-ci.org/GeckoTheGeek42/LazyModCore.png?branch=master)](https://travis-ci.org/GeckoTheGeek42/LazyModCore)
