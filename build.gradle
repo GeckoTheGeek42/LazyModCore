@@ -15,8 +15,10 @@ buildscript {
     }
 }
 
+apply plugin: 'scala'
 apply plugin: 'forge'
 
+/*
 ext.configFile = file "build.properties"
 configFile.withReader {
     // read config.  it shall from now on be referenced as simply config or as project.config
@@ -24,14 +26,28 @@ configFile.withReader {
     prop.load(it)
     project.ext.config = new ConfigSlurper().parse prop
 }
+*/
 
-version = config.mc_version + "-" + config.mod_version + "-" + config.build_number
-group= config.package_group // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = config.mod_name
+task("incrementBuildNumber")
+        {
+            // increment build number
+            doFirst {
+                // increment
+                config.build_number = (config.build_number.toString().toInteger()) + 1
+
+                // write back to the file
+                configFile.withWriter {
+                    config.toProperties().store(it, "")
+                }
+            }
+        }
+
+version = "1.7.10-0.0.0"
+group= "geek.lazy.core" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "LazyModCore"
 
 minecraft {
     version = "1.7.10-10.13.1.1216-new"
-    assetDir = "run/assets"
     runDir = "run"
 }
 
@@ -73,7 +89,7 @@ processResources
 
 // change the name of the obfuscated jar
 jar {
-    dependsOn "incrementBuildNumber"
+    //dependsOn "incrementBuildNumber"
     appendix = 'universal'
 
 }
@@ -96,20 +112,6 @@ task deobfJar(type: Jar) {
     appendix = 'deobf'
 }
 
-task("incrementBuildNumber")
-        {
-            // increment build number
-            doFirst {
-                // increment
-                config.build_number = (config.build_number.toString().toInteger()) + 1
-
-                // write back to the file
-                configFile.withWriter {
-                    config.toProperties().store(it, "")
-                }
-            }
-        }
-		
 artifacts {
     archives sourceJar
     archives deobfJar
@@ -117,3 +119,4 @@ artifacts {
 
     //archives obfJar
 }
+
